@@ -1,4 +1,4 @@
-import { asList, asString, VM, wrapFunc } from "cumlisp";
+import { asBoolean, asList, asString, Value, VM, wrapFunc } from "cumlisp";
 import { CONV_TO_BOOL, wrapSync } from "../utils";
 
 export default (vm: VM) =>
@@ -19,7 +19,7 @@ export default (vm: VM) =>
         reverse: wrapSync("reverse", 1, (args) =>
             asList(args[0]).slice().reverse()
         ),
-        map: wrapFunc("map", 2, async (args, scope) =>
+        map: wrapFunc("map", 2, (args, scope) =>
             Promise.all(
                 asList(args[1]).map(
                     async (x) =>
@@ -27,7 +27,7 @@ export default (vm: VM) =>
                 )
             )
         ),
-        filter: wrapFunc("filter", 2, async (args, scope) =>
+        filter: wrapFunc("filter", 2, (args, scope) =>
             Promise.all(
                 asList(args[1]).filter(async (x) => {
                     CONV_TO_BOOL(
@@ -35,5 +35,23 @@ export default (vm: VM) =>
                     );
                 })
             )
+        ),
+        "index-of": wrapSync("index-of", 2, (args) =>
+            asList(args[0]).indexOf(args[1])
+        ),
+        // now i can't just not include my favourite list function ever...
+        // imagine map except nulls are filtered out in the process
+        choose: wrapFunc("choose", 2, async (args, scope) =>
+            (
+                await Promise.all(
+                    asList(args[1]).map(
+                        async (x) =>
+                            await vm.run(
+                                [asString(args[0]), asString(x)],
+                                scope
+                            )
+                    )
+                )
+            ).filter((x) => asBoolean(x))
         ),
     });
