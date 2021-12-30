@@ -9,6 +9,7 @@ import {
     trueValue,
     falseValue,
     Value,
+    VMScope,
 } from "cumlisp";
 
 const CONV_TO_BOOL = (x: Value) => (asBoolean(x) ? trueValue : falseValue);
@@ -19,7 +20,16 @@ const asFloat = (x: Value) => {
     } catch (e) {
         return parseFloat(x.toString());
     }
-}
+};
+
+const wrapSync = (
+    name: string,
+    argCount: number,
+    func: (args: Value[], scope: VMScope) => Value
+) =>
+    wrapFunc(name, argCount, (args, scope) =>
+        Promise.resolve(func(args, scope))
+    );
 
 export default (vm: VM) => {
     vm.install({
@@ -29,46 +39,40 @@ export default (vm: VM) => {
         ),
 
         // string concatenation
-        "strcat-sep": wrapFunc("strcat-sep", -1, (args) =>
-            Promise.resolve(args.slice(1).map(asString).join(asString(args[0])))
+        "strcat-sep": wrapSync("strcat-sep", -1, (args) =>
+            args.slice(1).map(asString).join(asString(args[0]))
         ),
 
         // log functions log stuff to the console, and pass through their args as an array
-        conlog: wrapFunc("conlog", -1, (args) => {
+        conlog: wrapSync("conlog", -1, (args) => {
             console.log(...args);
-            return Promise.resolve(args);
+            return args;
         }),
-        conwarn: wrapFunc("conwarn", -1, (args) => {
+        conwarn: wrapSync("conwarn", -1, (args) => {
             console.warn(...args);
-            return Promise.resolve(args);
+            return args;
         }),
-        conerr: wrapFunc("conerr", -1, (args) => {
+        conerr: wrapSync("conerr", -1, (args) => {
             console.error(...args);
-            return Promise.resolve(args);
+            return args;
         }),
 
         // classic functional programming list basics
-        head: wrapFunc("head", 1, (args) =>
-            Promise.resolve(asList(args[0])[0])
-        ),
-        tail: wrapFunc("tail", 1, (args) =>
-            Promise.resolve(asList(args[0]).slice(1))
-        ),
-        "@": wrapFunc("@", -1, (args) => {
+        head: wrapSync("head", 1, (args) => asList(args[0])[0]),
+        tail: wrapSync("tail", 1, (args) => asList(args[0]).slice(1)),
+        "@": wrapSync("@", -1, (args) => {
             const list = asList(args[0]);
             let working = [];
             for (const item of list)
                 if (Array.isArray(item)) working.push(...item);
                 else working.push(item);
 
-            return Promise.resolve(working);
+            return working;
         }),
-        "::": wrapFunc("::", 2, (args) =>
-            Promise.resolve([args[0]].concat(asList(args[1])))
-        ),
+        "::": wrapSync("::", 2, (args) => [args[0]].concat(asList(args[1]))),
 
-        reverse: wrapFunc("reverse", 1, (args) =>
-            Promise.resolve(asList(args[0]).slice().reverse())
+        reverse: wrapSync("reverse", 1, (args) =>
+            asList(args[0]).slice().reverse()
         ),
         map: wrapFunc("map", 2, async (args, scope) =>
             Promise.all(
@@ -87,13 +91,16 @@ export default (vm: VM) => {
                 })
             )
         ),
-        
+
         // arithmetic extras (JS)
-        round: wrapFunc("round", 1, args => Promise.resolve(Math.round(asFloat(args[0])))),
-        "/": wrapFunc("/", 2, (args) =>
-            Promise.resolve(
-                (asInteger(args[0]) / asInteger(args[1])).toString()
-            )
+        round: wrapSync("round", 1, (args) => Math.round(asFloat(args[0]))),
+        "/": wrapSync("/", 2, (args) =>
+            (asInteger(args[0]) / asInteger(args[1])).toString()
+        ),
+        mod: wrapSync(
+            "mod",
+            2,
+            (args) => asInteger(args[0]) % asInteger(args[1])
         ),
     });
 
@@ -110,10 +117,4 @@ export default (vm: VM) => {
         ["set", ["varname"], ["-", ["get", ["varname"]], "1"]],
         vm.globalScope
     );
-    // wip
-    /* libBasic.setFunc(
-        ["mod", "val"],
-        ["-", ["round", ["/", ["val"], "2"]]],
-        vm.globalScope
-    ) */
 };
