@@ -15,5 +15,8 @@
   "homepage": "https://github.com/yellowsink/clisp-stools#readme",
   "devDependencies": {
     "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "cumlisp": "^1.1.0"
   }
 }

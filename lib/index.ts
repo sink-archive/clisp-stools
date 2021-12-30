@@ -1,7 +1,7 @@
 import initApi from "./initApi";
 export default initApi;
 
-import { VM, run } from "../../CumLISP/src/main";
+import { VM, run } from "cumlisp";
 
 (async () => {
     let vm = new VM();

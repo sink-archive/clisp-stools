@@ -1,4 +1,4 @@
-import { Value, VM, wrapFunc, asString } from "../../CumLISP/src/main";
+import { Value, VM, wrapFunc, asString } from "cumlisp";
 
 export default (vm: VM) => 
     vm.install({
