@@ -1,18 +1,19 @@
 {
   "name": "clisp-stools",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Sink's Tools for CumLISP - lots of useful stuff considered out of scope of the stdlib",
-  "main": "lib/index.js",
+  "main": "dist/initApi.js",
+  "module": "dist/initApi.js",
+  "types": "dist/initApi.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yellowsink/clisp-stools.git"
   },
+  "scripts": {
+    "prepublish": "tsc"
+  },
   "author": "Yellowsink",
   "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/yellowsink/clisp-stools/issues"
-  },
-  "homepage": "https://github.com/yellowsink/clisp-stools#readme",
   "devDependencies": {
     "typescript": "^4.5.4"
   },
