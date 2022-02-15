@@ -1,6 +1,6 @@
 {
   "name": "clisp-stools",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Sink's Tools for CumLISP - lots of useful stuff considered out of scope of the stdlib",
   "main": "lib/index.js",
   "repository": {
