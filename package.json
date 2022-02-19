@@ -10,7 +10,8 @@
     "url": "git+https://github.com/yellowsink/clisp-stools.git"
   },
   "scripts": {
-    "prepublish": "tsc"
+    "prepublish": "tsc",
+    "test": "tsc && node dist/index.js"
   },
   "author": "Yellowsink",
   "license": "BSD-3-Clause",

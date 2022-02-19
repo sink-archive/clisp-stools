@@ -1,4 +1,4 @@
-import { asInteger, trueValue, Value, VM, VMFunction, wrapFunc } from "cumlisp";
+import { asInteger, falseValue, Value, VM, VMFunction, wrapFunc } from "cumlisp";
 import { asFunc, spread, wrapSync } from "../utils";
 
 const wrappedPromiseSymbol = Symbol("STOOLS_LISP_PROMISE");
@@ -89,7 +89,7 @@ export default (vm: VM) => {
     "promise-delay": wrapSync("promise-delay", 1, ([duration]) =>
       wrapPromise(
         new Promise((res) => {
-          setTimeout(() => res(trueValue), asInteger(duration));
+          setTimeout(() => res(falseValue), asInteger(duration));
         })
       )
     ),

@@ -12,15 +12,20 @@ import { VM, run, libBasic } from "cumlisp";
   let res = await run(
     `%(
 
-        (set prom (promise-delay 100))
-        (promise-then
-          (prom)
-          (anon-func (result) (conlog second))
-        )
+        (set prom1 (promise-delay 100))
+        (set prom2 (promise-then
+          (prom1)
+          (anon-func (result) (
+            (conlog then callback called)
+            "second promise return"
+            ))
+        ))
 
-        (conlog first)
-        (await (prom))
-        (conlog third)
+        (conlog promises created)
+        (conlog (await (prom1)))
+        (conlog first promise resolved)
+        (conlog (await (prom2)))
+        (conlog after both promises resolved)
 
         ()
     )`,

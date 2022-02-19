@@ -1,4 +1,4 @@
-import { asList, asString, falseValue, trueValue, VM, wrapFunc } from "cumlisp";
+import { asList, asString, falseValue, VM, wrapFunc } from "cumlisp";
 import { asFunc, wrapSync } from "../utils";
 
 let nextId = 0;
