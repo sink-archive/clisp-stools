@@ -2,7 +2,7 @@
   "name": "clisp-stools",
   "version": "0.2.0",
   "description": "Sink's Tools for CumLISP - lots of useful stuff considered out of scope of the stdlib",
-  "main": "dist/index.js",
+  "main": "dist/initApi.js",
   "module": "dist/initApi.js",
   "types": "dist/initApi.d.ts",
   "repository": {
