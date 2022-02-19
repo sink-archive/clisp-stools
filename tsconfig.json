@@ -1,10 +1,11 @@
 {
     "include": ["lib/**/*.ts"],
     "compilerOptions": {
-        "target": "ES6",
+        "target": "ESNext",
         "noImplicitAny": true,
         "declaration": true,
         "outDir": "dist",
-        "module": "CommonJS"
+        "module": "CommonJS",
+        "sourceMap": true
     }
 }

@@ -1,16 +1,21 @@
 import {
     asBoolean,
     asInteger,
+    asString,
     falseValue,
     trueValue,
     Value,
+    VMFunction,
     VMScope,
     wrapFunc,
 } from "cumlisp";
 
-const CONV_TO_BOOL = (x: Value) => (asBoolean(x) ? trueValue : falseValue);
+// converts a value to the lisp true and false values based on its JS truthiness
+export const CONV_TO_BOOL = (x: Value) =>
+    asBoolean(x) ? trueValue : falseValue;
 
-const asFloat = (x: Value) => {
+// attempts to convert a value to a float
+export const asFloat = (x: Value) => {
     try {
         return asInteger(x);
     } catch (e) {
@@ -18,7 +23,10 @@ const asFloat = (x: Value) => {
     }
 };
 
-const wrapSync = (
+// like wrapFunc but doesnt require returning a promise
+// we can just make our function async, but we do sync stuff so much in this lib
+// that its easier to just wrap it
+export const wrapSync = (
     name: string,
     argCount: number,
     func: (args: Value[], scope: VMScope) => Value
@@ -27,10 +35,42 @@ const wrapSync = (
         Promise.resolve(func(args, scope))
     );
 
-const err = (type: string, ...data: Value[]): [string, string, Value[]] => [
-    "ERR",
-    type.toUpperCase(),
-    data,
-];
+// wraps a function to spread the first argument into the original
+// useful when passing lisp arguments directly into a JS function
+export const spread =
+    <T, R>(func: (...args: T[]) => R) =>
+    (args: T[]) =>
+        func(...args);
 
-export { CONV_TO_BOOL, asFloat, wrapSync, err };
+export const asPromise = (v: Value): Promise<Value> => {
+    if (v instanceof Promise) return v;
+    throw new Error(`Value of kind ${v.constructor} is not a promise`);
+};
+
+// attempts to get the value as a function
+export function asFunc(v: Value, scope?: VMScope): VMFunction {
+    // @ts-expect-error theres no way for us to know this is a vm func, but if this is being passed
+    // a function that isnt a vm func you are using this function very wrong
+    if (typeof v === "function") return v;
+
+    if (scope) {
+        let fName;
+        try {
+            fName = asString(v);
+        } catch {
+            throw new Error(
+                `Value of kind ${v.constructor} not a function and not a string`
+            );
+        }
+        const f = scope.getFunction(fName);
+        if (f) return f;
+
+        throw new Error(
+            `Function with name ${fName} does not exist in that scope`
+        );
+    }
+
+    throw new Error(
+        `Value of kind ${v.constructor} not convertible to function`
+    );
+}
