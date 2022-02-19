@@ -7,10 +7,10 @@ import misc from "./api/misc";
 import promise from "./api/promise";
 
 export default (vm: VM) => {
-    arithmetic(vm);
-    console(vm);
-    list(vm);
-    misc(vm);
-    promise(vm);
-    anonfuncs(vm);
+  arithmetic(vm);
+  console(vm);
+  list(vm);
+  misc(vm);
+  promise(vm);
+  anonfuncs(vm);
 };
