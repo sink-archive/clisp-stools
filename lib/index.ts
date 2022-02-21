@@ -12,20 +12,19 @@ import { VM, run, libBasic } from "cumlisp";
   let res = await run(
     `%(
 
-        (set prom1 (promise-delay 100))
-        (set prom2 (promise-then
-          (prom1)
-          (anon-func (result) (
-            (conlog then callback called)
-            "second promise return"
-            ))
-        ))
+        (set url "https://api.github.com/")
 
-        (conlog promises created)
-        (conlog (await (prom1)))
-        (conlog first promise resolved)
-        (conlog (await (prom2)))
-        (conlog after both promises resolved)
+        (conlog (prop (await (fetch (url))) status))
+        #| 200 |#
+
+        (conlog (await (prop (await (fetch (url))) text)))
+        #| a load of json |#
+
+        (conlog (await (fetch-text (url))))
+        #| same as above |#
+
+        (conlog (await (fetch-json (url))))
+        #| the json decoded to an object |#
 
         ()
     )`,

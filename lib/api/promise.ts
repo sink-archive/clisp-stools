@@ -4,13 +4,13 @@ import { asFunc, spread, wrapSync } from "../utils";
 const wrappedPromiseSymbol = Symbol("STOOLS_LISP_PROMISE");
 type WrappedPromise<T> = { [wrappedPromiseSymbol]: Promise<T> };
 
-const wrapPromise = <T>(promise: Promise<T>): WrappedPromise<T> => ({
+export const wrapPromise = <T>(promise: Promise<T>): WrappedPromise<T> => ({
   [wrappedPromiseSymbol]: promise,
 });
-const unwrapPromise = <T>(promise: WrappedPromise<T>): Promise<T> =>
+export const unwrapPromise = <T>(promise: WrappedPromise<T>): Promise<T> =>
   promise[wrappedPromiseSymbol];
 
-const asUnwrappedPromise = (v: Value): Promise<any> => {
+export const asUnwrappedPromise = (v: Value): Promise<any> => {
   // @ts-expect-error
   if (typeof v === "object" && v[wrappedPromiseSymbol] instanceof Promise)
     // @ts-expect-error
