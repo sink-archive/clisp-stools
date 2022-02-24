@@ -1,16 +1,16 @@
 {
   "name": "clisp-stools",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Sink's Tools for CumLISP - lots of useful stuff considered out of scope of the stdlib",
   "main": "dist/index.js",
-  "module": "dist/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yellowsink/clisp-stools.git"
   },
   "scripts": {
-    "prepublish": "tsc",
+    "prepublish": "tsc && tsc --module esnext --outdir dist/esm",
     "test": "tsc && node dist/test.js"
   },
   "author": "Yellowsink",
