@@ -1,19 +1,19 @@
 lockfileVersion: 5.3
 
 specifiers:
-  cumlisp: ^1.3.0
+  cumlisp: ^1.3.1
   typescript: ^4.5.5
 
 dependencies:
-  cumlisp: 1.3.0
+  cumlisp: 1.3.1
 
 devDependencies:
   typescript: 4.5.5
 
 packages:
 
-  /cumlisp/1.3.0:
-    resolution: {integrity: sha512-Q0CC3UXiGaj3YBycjSktzmCvDaPj1Qd/1yfS5bdSQIaQT8h5Injq4ISTu5hETd9AGVOA8jSEJUlLifQ1cUFLGA==}
+  /cumlisp/1.3.1:
+    resolution: {integrity: sha512-otCUUXQnI2DUsIL7GUKR2N6m0DEZKnj8PojJTZEoYlppWRQ0QYLA1h2rcgCs0iUJjMIaV0ZNuFw8O/CKJSPbKg==}
     dev: false
 
   /typescript/4.5.5:

@@ -68,3 +68,20 @@ export function asFunc(v: Value, scope?: VMScope): VMFunction {
 
   throw new Error(`Value of kind ${v.constructor} not convertible to function`);
 }
+
+const wrappedPromiseSymbol = Symbol("STOOLS_LISP_PROMISE");
+export type WrappedPromise<T> = { [wrappedPromiseSymbol]: Promise<T> };
+
+export const wrapPromise = <T>(promise: Promise<T>): WrappedPromise<T> => ({
+  [wrappedPromiseSymbol]: promise,
+});
+export const unwrapPromise = <T>(promise: WrappedPromise<T>): Promise<T> =>
+  promise[wrappedPromiseSymbol];
+
+export const asUnwrappedPromise = (v: Value): Promise<any> => {
+  // @ts-expect-error
+  if (typeof v === "object" && v[wrappedPromiseSymbol] instanceof Promise)
+    // @ts-expect-error
+    return v[wrappedPromiseSymbol];
+  throw new Error(`Value of kind ${v.constructor} is not a promise`);
+};
