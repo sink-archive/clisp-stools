@@ -11,7 +11,7 @@
   },
   "scripts": {
     "prepublish": "tsc",
-    "test": "tsc && node dist/index.js"
+    "test": "tsc && node dist/test.js"
   },
   "author": "Yellowsink",
   "license": "BSD-3-Clause",

@@ -16,3 +16,5 @@ export default (vm: VM) => {
   anonfuncs(vm);
   fetch(vm)
 };
+
+export * as utils from "./utils";
