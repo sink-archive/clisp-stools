@@ -2,6 +2,7 @@ import { VM } from "cumlisp";
 import anonfuncs from "./api/anonfuncs";
 import arithmetic from "./api/arithmetic";
 import console from "./api/console";
+import fetch from "./api/fetch";
 import list from "./api/list";
 import misc from "./api/misc";
 import promise from "./api/promise";
@@ -13,4 +14,5 @@ export default (vm: VM) => {
   misc(vm);
   promise(vm);
   anonfuncs(vm);
+  fetch(vm)
 };
