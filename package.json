@@ -1,10 +1,10 @@
 {
   "name": "clisp-stools",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Sink's Tools for CumLISP - lots of useful stuff considered out of scope of the stdlib",
-  "main": "dist/initApi.js",
-  "module": "dist/initApi.js",
-  "types": "dist/initApi.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yellowsink/clisp-stools.git"
